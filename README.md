@@ -1,4 +1,5 @@
 # CIES400
 
-
-Joey Gil
+Joey Gil  
+Vincent  
+Genesis Bautista
