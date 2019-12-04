@@ -1,26 +1,21 @@
 {
   "format": 1,
   "restore": {
-    "F:\\School\\_CEIS400\\GroupProject\\CIES400\\API\\API\\API\\API.csproj": {}
+    "C:\\Users\\Genesis Bautista\\Projects\\CIES400\\API\\API\\API\\API.csproj": {}
   },
   "projects": {
-    "F:\\School\\_CEIS400\\GroupProject\\CIES400\\API\\API\\API\\API.csproj": {
+    "C:\\Users\\Genesis Bautista\\Projects\\CIES400\\API\\API\\API\\API.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "F:\\School\\_CEIS400\\GroupProject\\CIES400\\API\\API\\API\\API.csproj",
+        "projectUniqueName": "C:\\Users\\Genesis Bautista\\Projects\\CIES400\\API\\API\\API\\API.csproj",
         "projectName": "API",
-        "projectPath": "F:\\School\\_CEIS400\\GroupProject\\CIES400\\API\\API\\API\\API.csproj",
+        "projectPath": "C:\\Users\\Genesis Bautista\\Projects\\CIES400\\API\\API\\API\\API.csproj",
         "packagesPath": "C:\\Users\\Genesis Bautista\\.nuget\\packages\\",
-        "outputPath": "F:\\School\\_CEIS400\\GroupProject\\CIES400\\API\\API\\API\\obj\\",
+        "outputPath": "C:\\Users\\Genesis Bautista\\Projects\\CIES400\\API\\API\\API\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackagesFallback\\",
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-        ],
         "configFilePaths": [
           "C:\\Users\\Genesis Bautista\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.Fallback.config"
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp3.0"
@@ -42,6 +37,30 @@
       },
       "frameworks": {
         "netcoreapp3.0": {
+          "dependencies": {
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[3.0.0, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[3.0.0, )"
+            },
+            "Microsoft.Extensions.Logging.Debug": {
+              "target": "Package",
+              "version": "[3.0.0, )"
+            },
+            "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
+              "target": "Package",
+              "version": "[3.0.0, )"
+            },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[12.0.3, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
