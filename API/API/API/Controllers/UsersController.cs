@@ -13,11 +13,11 @@ namespace API.Controllers
     public class UsersController : ControllerBase
     {
         // GET: api/Users
-        [HttpGet]
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
+        //[HttpGet]
+        //public IEnumerable<string> Get()
+        //{
+        //    return new string[] { "value1", "value2" };
+        //}
 
         // GET: api/Users/5
         [HttpGet("{id}", Name = "Get")]
@@ -28,8 +28,8 @@ namespace API.Controllers
             return foundUser;
         }
 
-        [HttpGet]
-        [ActionName("test")]
+        // GET: Users/test
+        [HttpGet("test")]
         public string test()
         {
             return "test";
@@ -51,7 +51,7 @@ namespace API.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpPost("login")]
         public object login([FromBody] Dictionary<string, string> pairs)
         {
             Users foundUser = new Users();

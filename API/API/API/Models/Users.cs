@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace API.Models
 {
-    public class Users
+    public abstract class Users
     {
         public string id { get; set; }
         public string username { get; set; }
