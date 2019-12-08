@@ -54,11 +54,10 @@ namespace API.Controllers
         [HttpPost("login")]
         public object login([FromBody] Dictionary<string, string> pairs)
         {
-            Users foundUser = new Users();
-            foundUser.findByUsername(pairs["username"]);
-            if (foundUser.password == pairs["password"])
+            Users possibleUser = new Users();
+            if (possibleUser.login(pairs["username"], pairs["password"]))
             {
-                return foundUser;
+                return possibleUser;
             }
             else
             {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using MySql.Data;
@@ -17,7 +18,7 @@ namespace API
 
         public Data()
         {
-            string connectionString = string.Format(@"Server={0}; database={1}; UID={2}; password={3}", server, dbName, username, password);
+            string connectionString = string.Format(@"Server={0}; database={1}; UID={2}; password={3}; Allow User Variables=True", server, dbName, username, password);
             connection = new MySqlConnection(connectionString);
         }
 
@@ -50,6 +51,39 @@ namespace API
             }
             closeData();
             return result;
+        }
+
+        public Dictionary<string, string> runStoredProcedure(string storedProc, Dictionary<string, string> inputs, Dictionary<string, MySqlDbType> outputs)
+        {
+            openData();
+            Dictionary<string, string> results = new Dictionary<string, string>();
+            MySqlCommand command = new MySqlCommand();
+            command.Connection = connection;
+            command.CommandText = storedProc;
+            command.CommandType = CommandType.StoredProcedure;
+
+            foreach (KeyValuePair<string, string> input in inputs)
+            {
+                command.Parameters.AddWithValue(input.Key, input.Value);
+                command.Parameters[input.Key].Direction = ParameterDirection.Input;
+            }
+
+            foreach (KeyValuePair<string, MySqlDbType> output in outputs)
+            {
+                command.Parameters.AddWithValue(output.Key, output.Value);
+                command.Parameters[output.Key].Direction = ParameterDirection.Output;
+                results.Add(output.Key, "");
+            }
+
+            command.ExecuteNonQuery();
+
+            foreach(KeyValuePair<string, string> result in results)
+            {
+                results[result.Key] = command.Parameters[result.Key].Value.ToString();
+            }
+
+            closeData();
+            return results;
         }
     }
 }

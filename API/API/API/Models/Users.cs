@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,6 +16,8 @@ namespace API.Models
         public string lastName { get; set; }
         public DateTime birthDate { get; set; }
         public IUserType userType { get; set; }
+        public string sessionId { get; set; }
+
         private Data data;
 
         public Users()
@@ -34,13 +37,31 @@ namespace API.Models
             this.birthDate = birthDate;
         }
         
-        public bool login(string password)
+        public bool login(string username, string password)
         {
-            //todo: returns true if login credentials are good
-            if (this.password == password)
-                return true;
-            else
+            string procedureName = "procUserLogin";
+            Dictionary<string, string> inputs = new Dictionary<string, string>()
+            {
+                { "@givenUsername", username },
+                { "@givenPassword", password }
+            };
+            Dictionary<string, MySqlDbType> outputs = new Dictionary<string, MySqlDbType>()
+            {
+                { "@result", MySqlDbType.VarChar },
+                { "@sessionId", MySqlDbType.VarChar }
+            };
+            Dictionary<string, string> result = data.runStoredProcedure(procedureName, inputs, outputs);
+
+            if (result["@result"].Contains("Error"))
+            {
                 return false;
+            }
+            else
+            {
+                findByUsername(username);
+                sessionId = result["@sessionId"];
+                return true;
+            }
         }
 
         public void logout()
@@ -86,20 +107,34 @@ namespace API.Models
                         break;
                 }
             }
-
         }
 
         public void findByUsername(string username)
         {
-            MockData data = new MockData();
-            Users foundUser = data.mockedUsers.FirstOrDefault(users => users.username == username);
-            this.username = username;
-            id = foundUser.id;
-            password = foundUser.password;
-            hint = foundUser.hint;
-            firstName = foundUser.firstName;
-            lastName = foundUser.lastName;
-            birthDate = foundUser.birthDate;
+            string sql = @"SELECT * FROM ceis400.vwuserinfo WHERE username = " + username;
+            List<Dictionary<string, string>> result = data.runSql(sql); ;
+
+            if (result.Count == 1)
+            {
+                id = result[0]["id"];
+                this.username = result[0]["username"];
+                password = "";
+                hint = result[0]["hint"];
+                firstName = result[0]["firstName"];
+                lastName = result[0]["lastName"];
+                switch (result[0]["type"].ToLower())
+                {
+                    case "staff":
+                        userType = new Staff(id);
+                        break;
+                    case "employee":
+                        userType = new Employee(id);
+                        break;
+                    case "supervisor":
+                        userType = new Supervisor(id);
+                        break;
+                }
+            }
         }
     }
 }
