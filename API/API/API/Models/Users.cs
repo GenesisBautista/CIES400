@@ -76,13 +76,13 @@ namespace API.Models
                 switch (result[0]["type"].ToLower())
                 {
                     case "staff":
-                        userType = new Staff();
+                        userType = new Staff(id);
                         break;
                     case "employee":
-                        userType = new Employee();
+                        userType = new Employee(id);
                         break;
                     case "supervisor":
-                        userType = new Supervisor();
+                        userType = new Supervisor(id);
                         break;
                 }
             }

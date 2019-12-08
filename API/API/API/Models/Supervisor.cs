@@ -7,8 +7,17 @@ namespace API.Models
 {
     public class Supervisor : IUserType
     {
-        public string Id { get; set; }
-        public string type = "Supervisor";
+        public string id { get; set; }
+        public string type
+        {
+            get { return "Supervisor"; }
+            set { }
+        }
+
+        public Supervisor(string id)
+        {
+            this.id = id;
+        }
 
         public void terminateEmployee(string username)
         {

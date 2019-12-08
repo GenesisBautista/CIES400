@@ -7,8 +7,17 @@ namespace API.Models
 {
     public class Staff : IUserType
     {
-        public string Id { get; set; }
-        public string type = "Staff";
+        public string id { get; set; }
+        public string type
+        {
+            get { return "Staff"; }
+            set { }
+        }
+
+        public Staff(string id)
+        {
+            this.id = id;
+        }
 
         public void checkHistory()
         {

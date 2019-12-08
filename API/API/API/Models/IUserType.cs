@@ -7,7 +7,7 @@ namespace API.Models
 {
     public interface IUserType
     {
-        string Id { get; set; }
+        string id { get; set; }
         string type { get; set; }
     }
 }

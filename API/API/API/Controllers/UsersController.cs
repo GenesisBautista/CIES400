@@ -25,7 +25,7 @@ namespace API.Controllers
         {
             Users foundUser = new Users();
             foundUser.findById(id);
-            if(foundUser.id != string.Empty)
+            if(!string.IsNullOrEmpty(foundUser.id))
             {
                 return foundUser;
             }

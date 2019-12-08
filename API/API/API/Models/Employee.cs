@@ -7,8 +7,18 @@ namespace API.Models
 {
     public class Employee : IUserType
     {
-        public string Id { get; set; }
-        public string type = "Employee";
+        public string id { get; set; }
+        public string type
+        {
+            get { return "Employee"; }
+            set { }
+        }
+
+        public Employee(string id)
+        {
+            this.id = id;
+        }
+
         public string skillType { get; set; }
         List<Equipment> toolbox { get; set; }
     }
