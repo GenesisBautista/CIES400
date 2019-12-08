@@ -5,9 +5,10 @@ using System.Threading.Tasks;
 
 namespace API.Models
 {
-    public class Supervisor
+    public class Supervisor : IUserType
     {
-        string Id { get; set; }
+        public string Id { get; set; }
+        public string type = "Supervisor";
 
         public void terminateEmployee(string username)
         {

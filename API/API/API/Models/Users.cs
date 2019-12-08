@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace API.Models
 {
-    public abstract class Users
+    public class Users
     {
         public string id { get; set; }
         public string username { get; set; }
@@ -14,9 +14,12 @@ namespace API.Models
         public string firstName { get; set; }
         public string lastName { get; set; }
         public DateTime birthDate { get; set; }
+        public IUserType userType { get; set; }
+        private Data data;
 
         public Users()
         {
+            data = new Data();
         }
 
         public Users(string id, string username, string password, string hint, string firstName, string lastName, DateTime birthDate)
@@ -59,15 +62,31 @@ namespace API.Models
 
         public void findById(string id)
         {
-            MockData data = new MockData();
-            Users foundUser = data.mockedUsers.FirstOrDefault(users => users.id == id);
-            this.id = id;
-            username = foundUser.username;
-            password = foundUser.password;
-            hint = foundUser.hint;
-            firstName = foundUser.firstName;
-            lastName = foundUser.lastName;
-            birthDate = foundUser.birthDate;
+            string sql = @"SELECT * FROM ceis400.vwuserinfo WHERE id = " + id;
+            List<Dictionary<string, string>> result = data.runSql(sql); ;
+            
+            if(result.Count == 1)
+            {
+                this.id = id;
+                username = result[0]["username"];
+                password = "";
+                hint = result[0]["hint"];
+                firstName = result[0]["firstName"];
+                lastName = result[0]["lastName"];
+                switch (result[0]["type"].ToLower())
+                {
+                    case "staff":
+                        userType = new Staff();
+                        break;
+                    case "employee":
+                        userType = new Employee();
+                        break;
+                    case "supervisor":
+                        userType = new Supervisor();
+                        break;
+                }
+            }
+
         }
 
         public void findByUsername(string username)

@@ -5,10 +5,11 @@ using System.Threading.Tasks;
 
 namespace API.Models
 {
-    public class Employee
+    public class Employee : IUserType
     {
-        string Id { get; set; }
-        string skillType { get; set; }
+        public string Id { get; set; }
+        public string type = "Employee";
+        public string skillType { get; set; }
         List<Equipment> toolbox { get; set; }
     }
 }

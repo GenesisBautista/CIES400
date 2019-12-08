@@ -5,9 +5,10 @@ using System.Threading.Tasks;
 
 namespace API.Models
 {
-    public class Staff
+    public class Staff : IUserType
     {
-        string id { get; set; }
+        public string Id { get; set; }
+        public string type = "Staff";
 
         public void checkHistory()
         {

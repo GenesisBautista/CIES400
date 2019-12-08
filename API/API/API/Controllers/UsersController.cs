@@ -21,18 +21,18 @@ namespace API.Controllers
 
         // GET: api/Users/5
         [HttpGet("{id}", Name = "Get")]
-        public Users Get(string id)
+        public object Get(string id)
         {
             Users foundUser = new Users();
             foundUser.findById(id);
-            return foundUser;
-        }
-
-        // GET: Users/test
-        [HttpGet("test")]
-        public string test()
-        {
-            return "test";
+            if(foundUser.id != string.Empty)
+            {
+                return foundUser;
+            }
+            else
+            {
+                return NotFound();
+            }
         }
 
         // POST: api/User
