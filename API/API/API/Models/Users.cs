@@ -37,37 +37,39 @@ namespace API.Models
             this.birthDate = birthDate;
         }
         
-        public bool login(string username, string password)
+        public string login(string username, string password)
         {
             string procedureName = "procUserLogin";
             Dictionary<string, string> inputs = new Dictionary<string, string>()
             {
-                { "@givenUsername", username },
-                { "@givenPassword", password }
+                { "givenUsername", username },
+                { "givenPassword", password }
             };
             Dictionary<string, MySqlDbType> outputs = new Dictionary<string, MySqlDbType>()
             {
-                { "@result", MySqlDbType.VarChar },
-                { "@sessionId", MySqlDbType.VarChar }
+                { "result", MySqlDbType.VarChar },
+                { "sessionId", MySqlDbType.VarChar }
             };
             Dictionary<string, string> result = data.runStoredProcedure(procedureName, inputs, outputs);
 
-            if (result["@result"].Contains("Error"))
-            {
-                return false;
-            }
-            else
+            if (result["result"] == "Success") 
             {
                 findByUsername(username);
-                sessionId = result["@sessionId"];
-                return true;
             }
+
+            return result["result"];
         }
 
-        public void logout()
+        public void logout(string sessionId)
         {
-            //todo: destroys current session of given user
-            throw new NotImplementedException();
+            string procedureName = "procUserLogout";
+            Dictionary<string, string> inputs = new Dictionary<string, string>()
+            {
+                {"sessionId", sessionId }
+            };
+            Dictionary<string, MySqlDbType> outputs = new Dictionary<string, MySqlDbType>();
+
+            data.runStoredProcedure(procedureName, inputs, outputs);
         }
 
         public bool changePassword()
@@ -79,6 +81,38 @@ namespace API.Models
         public string forgotPassword()
         {
             return this.hint;
+        }
+
+        public string createUser(
+            string id, 
+            string username, 
+            string password, 
+            string hint, 
+            string firstName, 
+            string lastName, 
+            DateTime birthDate, 
+            int userTypeId)
+        {
+            string procedureName = "procUserSignUp";
+            Dictionary<string, string> inputs = new Dictionary<string, string>()
+            {
+                {"id", id },
+                {"username", username },
+                {"password", password },
+                {"hint", hint },
+                {"firstName", firstName },
+                {"lastName", lastName },
+                {"birthDate", birthDate.ToString("yyyy-MM-dd HH:mm:ss") },
+                {"userTypeId", userTypeId.ToString() }
+             };
+            Dictionary<string, MySqlDbType> outputs = new Dictionary<string, MySqlDbType>()
+            {
+                {"result", MySqlDbType.VarChar }
+            };
+
+            Dictionary<string, string> result = data.runStoredProcedure(procedureName, inputs, outputs);
+
+            return result["result"];
         }
 
         public void findById(string id)
@@ -111,12 +145,12 @@ namespace API.Models
 
         public void findByUsername(string username)
         {
-            string sql = @"SELECT * FROM ceis400.vwuserinfo WHERE username = " + username;
+            string sql = @"SELECT * FROM ceis400.vwuserinfo WHERE username = '" + username + "';";
             List<Dictionary<string, string>> result = data.runSql(sql); ;
 
             if (result.Count == 1)
             {
-                id = result[0]["id"];
+                id = result[0]["ID"];
                 this.username = result[0]["username"];
                 password = "";
                 hint = result[0]["hint"];

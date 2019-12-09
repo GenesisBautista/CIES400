@@ -13,7 +13,16 @@ namespace API.Models
             get { return "Staff"; }
             set { }
         }
+        public int getUserTypeId()
+        {
+            string sql = "SELECT * FROM tbkusertype WHERE type = " + type;
+            List<Dictionary<string, string>> results = new List<Dictionary<string, string>>();
+            Data data = new Data();
 
+            results = data.runSql(sql);
+
+            return int.Parse(results[0]["userTypeId"]);
+        }
         public Staff(string id)
         {
             this.id = id;

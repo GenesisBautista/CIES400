@@ -12,14 +12,7 @@ namespace API.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        // GET: api/Users
-        //[HttpGet]
-        //public IEnumerable<string> Get()
-        //{
-        //    return new string[] { "value1", "value2" };
-        //}
-
-        // GET: api/Users/5
+        // GET: /Users/5
         [HttpGet("{id}", Name = "Get")]
         public object Get(string id)
         {
@@ -35,46 +28,47 @@ namespace API.Controllers
             }
         }
 
-        // POST: api/User
+        // POST: /Users
         [HttpPost]
         public object Post([FromBody] Dictionary<string, string> pairs)
         {
-            Users foundUser = new Users();
-            foundUser.findByUsername(pairs["username"]);
-            if (foundUser.password == pairs["password"])
-            {
-                return foundUser;
-            }
-            else
-            {
-                return Unauthorized();
-            }
+            Users newUser = new Users();
+
+            return newUser.createUser(
+                pairs["id"],
+                pairs["username"],
+                pairs["password"],
+                pairs["hint"],
+                pairs["firstName"],
+                pairs["lastName"],
+                Convert.ToDateTime(pairs["birthDate"]),
+                int.Parse(pairs["userType"])
+                );
         }
 
+        // POST: /Users/login
         [HttpPost("login")]
         public object login([FromBody] Dictionary<string, string> pairs)
         {
             Users possibleUser = new Users();
-            if (possibleUser.login(pairs["username"], pairs["password"]))
+            string result = possibleUser.login(pairs["username"], pairs["password"]);
+            switch (result)
             {
-                return possibleUser;
-            }
-            else
-            {
-                return Unauthorized();
-            }
+                case "Error: User already logged in":
+                    return Conflict();
+                case "Error: Bad Credentials":
+                    return Unauthorized();
+                default:
+                    return possibleUser;
+            };
         }
 
-        // PUT: api/Users/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        // POST: /Users/logout
+        [HttpPost("logout")]
+        public void logout([FromBody] Dictionary<string, string> pairs)
         {
-        }
-
-        // DELETE: api/ApiWithActions/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
+            Users user = new Users();
+            user.logout(pairs["sessionId"]);
         }
     }
 }

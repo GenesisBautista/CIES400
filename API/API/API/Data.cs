@@ -64,20 +64,20 @@ namespace API
 
             foreach (KeyValuePair<string, string> input in inputs)
             {
-                command.Parameters.AddWithValue(input.Key, input.Value);
+                command.Parameters.Add(new MySqlParameter(input.Key, input.Value));
                 command.Parameters[input.Key].Direction = ParameterDirection.Input;
             }
 
             foreach (KeyValuePair<string, MySqlDbType> output in outputs)
             {
-                command.Parameters.AddWithValue(output.Key, output.Value);
+                command.Parameters.Add(new MySqlParameter(output.Key, output.Value));
                 command.Parameters[output.Key].Direction = ParameterDirection.Output;
                 results.Add(output.Key, "");
             }
 
-            command.ExecuteNonQuery();
+            _ = command.ExecuteNonQuery();
 
-            foreach(KeyValuePair<string, string> result in results)
+            foreach(KeyValuePair<string, string> result in results.ToList<KeyValuePair<string, string>>())
             {
                 results[result.Key] = command.Parameters[result.Key].Value.ToString();
             }

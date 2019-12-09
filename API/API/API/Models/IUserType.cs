@@ -9,5 +9,6 @@ namespace API.Models
     {
         string id { get; set; }
         string type { get; set; }
+        int getUserTypeId();
     }
 }

@@ -18,7 +18,16 @@ namespace API.Models
         {
             this.id = id;
         }
+        public int getUserTypeId()
+        {
+            string sql = "SELECT * FROM tbkusertype WHERE type = " + type;
+            List<Dictionary<string, string>> results = new List<Dictionary<string, string>>();
+            Data data = new Data();
 
+            results = data.runSql(sql);
+
+            return int.Parse(results[0]["userTypeId"]);
+        }
         public void terminateEmployee(string username)
         {
             //todo: mark employee account as terminated
