@@ -13,12 +13,34 @@ namespace API.Models
 
         public void checkIn()
         {
-            //todo: check this tool in
+            /*
+            for (int i = 0; i < dtRec.Rows.Count; i++)
+            {
+                DataRow recRow = dtRec.Rows[i];
+                if (recRow[0].ToString() == "Contact Vibration Specialist")
+                {
+                    count--;
+                    if (count > 0)
+                    {
+                        recRow[0] = string.Empty;
+                        recRow.Delete();
+                        dtRec.AcceptChanges();
+                    }
+                }
+            }
+            */
+
+            //todo: check this tool in - *****will this work for checkin process?*******
             throw new NotImplementedException();
         }
 
         public void checkOut()
         {
+            /*
+            DataTable dt = ...;
+            DataRow toInsert = dt.NewRow();
+            dt.Rows.InsertAt(toInsert, index);
+             */
             //todo: check this tool out
             throw new NotImplementedException();
         }
